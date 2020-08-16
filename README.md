@@ -26,7 +26,7 @@ We're going to use a tool `parted` to setup your drives. For UEFI to work, your 
 First, find your hard drive ( it might be `nvme0N0` if laptop hard drive or `sda` if big hard drive).
 
 ```
-parted -a optimal /dev/nvme0N0
+parted -a optimal /dev/nvme0n0
 ```
 
 Once in the UI you can see what partitions already exist with `print`
@@ -50,8 +50,8 @@ quit
 This creates a partition for your boot and the rest for your files.  In order for UEFI to read your boot partition it needs to be FAT32.
 
 ```
-mkfs.fat -F 32 /dev/nvme0N0P1
-mkfs.ext4 -T small /dev/nvme0N0P2
+mkfs.fat -F 32 /dev/nvme0n0p1
+mkfs.ext4 -T small /dev/nvme0n0p2
 ```
 
 ### Preparing the system for setup
