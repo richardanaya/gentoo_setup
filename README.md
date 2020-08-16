@@ -1,4 +1,8 @@
-# Setup
+# Setting up Gentoo on a Modern Computer
+
+
+
+## 1) Pre-Setup
 
 This is instructions for setting up gentoo on a system
 
@@ -6,7 +10,7 @@ This is instructions for setting up gentoo on a system
 * wifi is primary network
 * UEFI
 
-## Setup network
+### Setup network
 
 Find your wireless card id by doing `ifconfig`
 
@@ -15,7 +19,7 @@ The fastest way to get wifi going in a basic way is `net-setup <wireless id>`
 * set the ESSID to your wifi you want to connect to
 * set password to WPA/WPA2 and type in your wifi password
 
-## Setup disk
+### Setup disk
 
 We're going to use a tool `parted` to setup your drives. For UEFI to work, your boot drive is going to need to be FAT32.
 
@@ -50,7 +54,7 @@ mkfs.fat -F 32 /dev/nvme0N0P1
 mkfs.ext4 -T small /dev/nvme0N0P2
 ```
 
-## Preparing the system for setup
+### Preparing the system for setup
 
 We're going to setup our gentoo system by using `chroot` to change the root of the local file system to our new drive mounted at a subdirectory `/mnt/gentoo`
 
@@ -69,7 +73,7 @@ mount --make-rslave /mnt/gentoo/dev
 mount /dev/nvme0N0P1 /mnt/gentoo/boot
 ```
 
-## Get basic Gentoo tools
+### Get basic Gentoo tools
 
 We need to get the `stage3` bundle of tools
 
@@ -86,7 +90,7 @@ Unzip stage3 using this command to preserve file settings:
 tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
 ```
 
-## Environment settings
+### Environment settings
 
 In case your network has special DNS resolution configs
 
@@ -115,7 +119,7 @@ CXXFLAGS="${COMMON_FLAGS}"
 MAKEOPTS="-j8"
 ```
 
-## Chroot into our environment
+## 2) Setup
 
 ```
 chroot /mnt/gentoo /bin/bash
@@ -123,7 +127,7 @@ chroot /mnt/gentoo /bin/bash
 
 We are now in our environment of our hard drive, everything from here on out will affect your final system!
 
-## Update stage3 tools
+### Update stage3 tools
 
 Before we get going, let's update our existing tools
 
@@ -133,7 +137,7 @@ emerge-webrsync
 emerge --ask --verbose --update --deep --newuse @world
 ```
 
-## Setup Language
+### Setup Language
 
 Let's setup locale that will setup gentoo with our language preferences
 
@@ -157,7 +161,7 @@ eselect local <number of locale you want>
 env-update && source /etc/profile 
 ```
 
-## Build a Kernel
+### Build a Kernel
 
 ```
 emerge sys-kernel/gentoo-sources sys-apps/pciutils
@@ -173,7 +177,7 @@ make modules_install
 make install
 ```
 
-## Setup Filesystem Config
+### Setup Filesystem Config
 
 `fstab` holds a list of filesystem mappings
 
@@ -186,7 +190,7 @@ nano -w /etc/fstab
 /dev/nvme0N0P2   /            ext4    noatime              0 1
 ```
 
-## Setup Basics
+### Setup Basics
 
 ```
 echo "America/Los_angeles" > /etc/timezone
@@ -204,7 +208,7 @@ Set your password
 
 ```passwd```
 
-## Setup wireless
+### Setup wireless
 
 Set your hostname
 
