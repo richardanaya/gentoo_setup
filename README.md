@@ -130,6 +130,67 @@ Before we get going, let's update our existing tools
 ```
 source /etc/profile
 emerge-webrsync
+emerge --ask --verbose --update --deep --newuse @world
+```
+
+# Setup Language
+
+Let's setup locale that will setup gentoo with our language preferences
+
+```
+nano -w /etc/locale.gen
+```
+```
+en_US.UTF-8 UTF-8
+```
+
+```
+locale-gen
+```
+
+```
+eselect locale list
+eselect local <number of locale you want>
+```
+
+```
+env-update && source /etc/profile 
+```
+
+# Build a Kernel
+
+```
+emerge sys-kernel/gentoo-sources sys-apps/pciutils
+cd /usr/src/linux
+make menuconfig
+```
+
+Here is where you'll configure your kernel, if you don't want to do anything just exit.
+
+```
+make
+make modules_install
+make install
+```
+
+# Setup Filesystem Config
+
+`fstab` holds a list of filesystem mappings
+
+```
+nano -w /etc/fstab
+```
+
+```
+/dev/nvme0N0P1   /boot        vfat    defaults,noatime     0 2
+/dev/nvme0N0P2   /            ext4    noatime              0 1
+```
+
+# Setup Basics
+
+```
+echo "America/Los_angeles" > /etc/timezone
+emerge --config sys-libs/timezone-data
 ```
 
 # Setup wireless
